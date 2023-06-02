@@ -36,10 +36,10 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN }}
           script: |
-            const { data: labels } = await github.rest.pulls.listLabelsOnPullRequest({
+            const { data: labels } = await github.pulls.listLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
+              pull_number: context.issue.number
             });
 
             const labelExists = labels.some(label => label.name === 'no merge');
@@ -66,10 +66,10 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN }}
           script: |
-            const { data: labels } = await github.rest.pulls.listLabelsOnPullRequest({
+            const { data: labels } = await github.pulls.listLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
+              pull_number: context.issue.number
             });
 
             const labelExists = labels.some(label => label.name === 'build-successful');

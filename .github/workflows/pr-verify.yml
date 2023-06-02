@@ -1,0 +1,76 @@
+name: Verify Pull Request
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "11"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "2.10.0"
+          channel: "stable"
+
+      - name: Install Flutter dependencies
+        run: |
+          flutter pub get
+
+      - name: Update env gradle properties
+        run: |
+          sed -i 's/#{SIGNING_STORE_PASSWORD}#/${{ secrets.SIGNING_STORE_PASSWORD }}/g' android/key.properties
+          sed -i 's/#{SIGNING_KEY_PASSWORD}#/${{ secrets.SIGNING_KEY_PASSWORD }}/g' android/key.properties
+
+      - name: Build APK
+        run: |
+          flutter build apk -t "lib/main_prod.dart" --release
+
+      - name: Add label success
+        if: ${{ success() }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN }}
+          script: |
+            await github.rest.issues.removeLabel({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'no merge'
+            });
+
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['build-successful']
+            })
+
+      - name: Add label failure
+        if: ${{ failure() }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN }}
+          script: |
+            await github.rest.issues.removeLabel({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'build-successful'
+            });
+
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['no merge']
+            })

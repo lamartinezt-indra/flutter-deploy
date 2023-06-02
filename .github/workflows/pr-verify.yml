@@ -26,14 +26,9 @@ jobs:
         run: |
           flutter pub get
 
-      - name: Update env gradle properties
-        run: |
-          sed -i 's/#{SIGNING_STORE_PASSWORD}#/${{ secrets.SIGNING_STORE_PASSWORD }}/g' android/key.properties
-          sed -i 's/#{SIGNING_KEY_PASSWORD}#/${{ secrets.SIGNING_KEY_PASSWORD }}/g' android/key.properties
-
       - name: Build APK
         run: |
-          flutter build apk -t "lib/main_prod.dart" --release
+          flutter build apk -t "lib/main.dart" --release
 
       - name: Add label success
         if: ${{ success() }}

@@ -36,9 +36,10 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN }}
           script: |
-            const { data: labels } = await github.rest.issues.listLabelsForRepo({
+            const { data: labels } = await github.rest.pulls.listLabelsOnPullRequest({
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
             });
 
             const labelExists = labels.some(label => label.name === 'no merge');
@@ -65,13 +66,23 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN }}
           script: |
-            const { data: labels } = await github.rest.issues.listLabelsForRepo({
+            const { data: labels } = await github.rest.pulls.listLabelsOnPullRequest({
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
             });
 
             const labelExists = labels.some(label => label.name === 'build-successful');
-            console.log(labelExists)
+
+            if (labelExists) {
+              await github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'build-successful'
+              });
+            }
+
             github.rest.issues.addLabels({
               issue_number: context.issue.number,
               owner: context.repo.owner,

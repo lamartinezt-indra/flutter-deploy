@@ -71,16 +71,7 @@ jobs:
             });
 
             const labelExists = labels.some(label => label.name === 'build-successful');
-
-            if (labelExists) {
-              await github.rest.issues.removeLabel({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: 'build-successful'
-              });
-            }
-
+            console.log(labelExists)
             github.rest.issues.addLabels({
               issue_number: context.issue.number,
               owner: context.repo.owner,

@@ -36,12 +36,21 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN }}
           script: |
-            await github.rest.issues.removeLabel({
-              issue_number: context.issue.number,
+            const { data: labels } = await github.rest.issues.listLabelsForRepo({
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'no merge'
+              repo: context.repo.repo
             });
+
+            const labelExists = labels.some(label => label.name === 'no merge');
+
+            if (labelExists) {
+              await github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'no merge'
+              });
+            }
 
             github.rest.issues.addLabels({
               issue_number: context.issue.number,
@@ -56,12 +65,21 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN }}
           script: |
-            await github.rest.issues.removeLabel({
-              issue_number: context.issue.number,
+            const { data: labels } = await github.rest.issues.listLabelsForRepo({
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'build-successful'
+              repo: context.repo.repo
             });
+
+            const labelExists = labels.some(label => label.name === 'build-successful');
+
+            if (labelExists) {
+              await github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'build-successful'
+              });
+            }
 
             github.rest.issues.addLabels({
               issue_number: context.issue.number,

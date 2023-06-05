@@ -11,81 +11,88 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: "11"
+      - name: Get Labels
+      run: |
+        labels=$(echo "${{ steps.list-labels.outputs.labels }}" | tr -d '[],')
+        echo "Labels: $labels"
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "2.10.0"
-          channel: "stable"
+      # - name: Setup Java
+      #   uses: actions/setup-java@v1
+      #   with:
+      #     java-version: "11"
 
-      - name: Install Flutter dependencies
-        run: |
-          flutter pub get
+      # - name: Setup Flutter
+      #   uses: subosito/flutter-action@v2
+      #   with:
+      #     flutter-version: "2.10.0"
+      #     channel: "stable"
 
-      - name: Build APK
-        run: |
-          flutter build apk -t "lib/main.dart" --release
+      # - name: Install Flutter dependencies
+      #   run: |
+      #     flutter pub get
 
-      - name: Add label success
-        if: ${{ success() }}
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.TOKEN }}
-          script: |
-            const { data: labels } = await github.pulls.listLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
+      # - name: Build APK
+      #   run: |
+      #     flutter build apk -t "lib/main.dart" --release
 
-            const labelExists = labels.some(label => label.name === 'no merge');
+      # - name: Add label success
+      #   if: ${{ success() }}
+      #   uses: actions/github-script@v6
+      #   with:
+      #     github-token: ${{ secrets.TOKEN }}
+      #     script: |
+      #       const { data: labels } = await github.pulls.listLabels({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: context.issue.number
+      #       });
 
-            if (labelExists) {
-              await github.rest.issues.removeLabel({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: 'no merge'
-              });
-            }
+      #       const labelExists = labels.some(label => label.name === 'no merge');
 
-            github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['build-successful']
-            })
+      #       if (labelExists) {
+      #         await github.rest.issues.removeLabel({
+      #           issue_number: context.issue.number,
+      #           owner: context.repo.owner,
+      #           repo: context.repo.repo,
+      #           name: 'no merge'
+      #         });
+      #       }
 
-      - name: Add label failure
-        if: ${{ failure() }}
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.TOKEN }}
-          script: |
-            const { data: labels } = await github.pulls.listLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
+      #       github.rest.issues.addLabels({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         labels: ['build-successful']
+      #       })
 
-            const labelExists = labels.some(label => label.name === 'build-successful');
+      # - name: Add label failure
+      #   if: ${{ failure() }}
+      #   uses: actions/github-script@v6
+      #   with:
+      #     github-token: ${{ secrets.TOKEN }}
+      #     script: |
+      #       const prNumber = context.payload.pull_request.number;
 
-            if (labelExists) {
-              await github.rest.issues.removeLabel({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: 'build-successful'
-              });
-            }
+      #       const { data: labels } = await github.pulls.listLabels({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: prNumber
+      #       });
 
-            github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['no merge']
-            })
+      #       const labelExists = labels.some(label => label.name === 'build-successful');
+
+      #       if (labelExists) {
+      #         await github.rest.issues.removeLabel({
+      #           issue_number: context.issue.number,
+      #           owner: context.repo.owner,
+      #           repo: context.repo.repo,
+      #           name: 'build-successful'
+      #         });
+      #       }
+
+      #       github.rest.issues.addLabels({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         labels: ['no merge']
+      #       })

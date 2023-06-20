@@ -1,4 +1,4 @@
-name: CI - Android QA
+name: CI/CD - Android QA
 
 on:
   push:

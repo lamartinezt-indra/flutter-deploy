@@ -1,0 +1,27 @@
+name: Flutter Outdated Check
+
+on:
+  schedule:    
+    - cron: "*/10 * * * *"
+
+jobs:
+  check_outdated:
+    name: Check Outdated Packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      
+      - name: Version Flutter
+        run: |
+          flutter --version
+
+      - name: Run Flutter pub outdated
+        run: |
+          flutter pub outdated --up-to-date --no-dev-dependencies

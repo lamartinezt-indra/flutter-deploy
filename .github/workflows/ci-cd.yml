@@ -3,7 +3,7 @@ name: CI/CD - Android QA
 on:
   push:
     branches:
-      - task-1
+      - task-mod
 
 jobs:
   build:

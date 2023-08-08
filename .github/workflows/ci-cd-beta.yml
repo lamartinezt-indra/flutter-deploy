@@ -65,5 +65,4 @@ jobs:
         uses: ncipollo/release-action@v1.12.0
         with:
           artifacts: "build/app/outputs/bundle/release/*"
-          tag: v${{ github.ref }}
           token: ${{ secrets.TOKEN }}

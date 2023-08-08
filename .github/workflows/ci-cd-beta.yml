@@ -25,3 +25,33 @@ jobs:
       - name: Analyze files
         run: |
           flutter analyze .
+
+  build_android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.5.3
+
+      - name: Build AAB
+        run: |
+          flutter build appbundle -t "lib/main.dart" --release
+      
+      - uses: actions/upload-artifact@v3.1.2
+        with:
+          name: appbundle
+          path: build/app/outputs/bundle/release/app-release.aab
+  
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3.0.2
+        with:
+          name: appbundle
+          path: build/app/outputs/bundle/release/
+
+      - name: Generate Release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          artifacts: "build/app/outputs/bundle/release/*"
+          tag: v${{ github.ref }}
+          token: ${{ secrets.TOKEN }}

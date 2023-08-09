@@ -47,6 +47,13 @@ jobs:
         run: |
           flutter build appbundle -t "lib/main.dart" --release
       
+      - name: Build IOs
+      - run: |
+            cd ios 
+            rm -rf Podfile.lock
+            pod repo update
+      - run: flutter build ios -t lib/main_dev.dart --release --no-codesign
+      
       - uses: actions/upload-artifact@v3.1.2
         with:
           name: appbundle

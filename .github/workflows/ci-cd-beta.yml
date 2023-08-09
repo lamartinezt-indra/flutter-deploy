@@ -51,43 +51,15 @@ jobs:
         with:
           name: apk_release
           path: build/app/outputs/flutter-apk/app-release.apk
-  
-  build_ios:
-    runs-on: macOS-latest
-    needs: [test]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3.5.3
-      
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2.10.0
-        with:
-          channel: "stable"
-          cache: true
-      
-      - name: Install Flutter dependencies
-        run: |
-          cd ios 
-          rm -rf Podfile.lock
-          pod repo update
-      
-      - name: Build IOs
-        run: | 
-          flutter build ios -t lib/main.dart --release --no-codesign
-
-      - uses: actions/upload-artifact@v3.1.2
-        with:
-          name: ios_release
-          path: build/ios/iphoneos/Runner.app
 
   release:
     runs-on: ubuntu-latest
-    needs: [build_android, build_ios]
+    needs: [build_android]
     steps:
       - uses: actions/download-artifact@v3.0.2
         with:
           name: apk_release
-          path: build/app/outputs/bundle/release/
+          path: build/app/outputs/flutter-apk/
 
       - name: Generate Release
         uses: ncipollo/release-action@v1.12.0

@@ -49,8 +49,8 @@ jobs:
       
       - uses: actions/upload-artifact@v3.1.2
         with:
-          name: appbundle
-          path: build/app/outputs/bundle/release/app-release.aab
+          name: apk_release
+          path: build/app/outputs/bundle/release/app-release.apk
   
   build_ios:
     runs-on: macOS-latest
@@ -65,11 +65,11 @@ jobs:
           channel: "stable"
           cache: true
       
-      - name: Build IOs
+      - name: Install Flutter dependencies
         run: |
-            cd ios 
-            rm -rf Podfile.lock
-            pod repo update
+          cd ios 
+          rm -rf Podfile.lock
+          pod repo update
       
       - name: Build IOs
         run: | 
@@ -81,7 +81,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3.0.2
         with:
-          name: appbundle
+          name: apk_release
           path: build/app/outputs/bundle/release/
 
       - name: Generate Release

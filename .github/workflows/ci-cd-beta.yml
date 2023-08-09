@@ -65,10 +65,6 @@ jobs:
           channel: "stable"
           cache: true
       
-      #- name: Install Flutter dependencies
-      #  run: |
-      #    flutter pub get
-      
       - name: Install Flutter dependencies
         run: |
           cd ios 
@@ -92,14 +88,10 @@ jobs:
         with:
           name: apk_release
           path: build/app/outputs/bundle/release/
-      
-      - uses: actions/download-artifact@v3.0.2
-        with:
-          name: ios_release
-          path: build/ios/iphoneos/
 
       - name: Generate Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: "build/app/outputs/bundle/release/*,build/ios/iphoneos/*"
           token: ${{ secrets.TOKEN }}
+          #artifacts: "build/app/outputs/flutter-apk/*"
+          

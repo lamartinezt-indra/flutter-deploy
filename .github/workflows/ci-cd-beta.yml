@@ -56,10 +56,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_android]
     steps:
-      # - uses: actions/download-artifact@v3.0.2
-      #   with:
-      #     name: apk_release
-      #     path: build/app/outputs/flutter-apk/
+      - uses: actions/download-artifact@v3.0.2
+        with:
+          name: apk_release
+          path: build/app/outputs/flutter-apk/
 
       - name: Generate Release
         uses: ncipollo/release-action@v1.12.0

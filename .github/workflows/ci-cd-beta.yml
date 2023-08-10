@@ -46,11 +46,15 @@ jobs:
       - name: Build APK
         run: |
           flutter build apk -t "lib/main.dart" --release
+          flutter build appbundle -t "lib/main.dart" --release
       
       - uses: actions/upload-artifact@v3.1.2
         with:
-          name: apk_release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: android_artifacts
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+
 
   release:
     runs-on: ubuntu-latest
@@ -58,12 +62,12 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3.0.2
         with:
-          name: apk_release
-          path: build/app/outputs/flutter-apk/
+          name: android_artifacts
+          path: build/
 
       - name: Generate Release
         uses: ncipollo/release-action@v1.12.0
         with:
           token: ${{ secrets.TOKEN }}
-          # artifacts: "build/app/outputs/flutter-apk/*"
+          artifacts: "build/app/outputs/flutter-apk/*,build/app/outputs/bundle/release/*"
           

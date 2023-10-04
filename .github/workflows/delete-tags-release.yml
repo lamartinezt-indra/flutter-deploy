@@ -11,20 +11,11 @@ jobs:
       - name: Checkout el código
         uses: actions/checkout@v2
 
-      - name: List tags
-        id: list_tags
-        uses: jimschubert/query-tag-action@v1
-        with:
-          include: "v*-beta"
-
-      - name: Print tags
-        run: echo ${{ steps.list_tags.outputs.tag }}
-
-      # - name: Eliminar etiquetas
-      #   run: |
-      #     TAGS="${{ steps.list_tags.outputs.tags }}"
-      #     for tag in $TAGS; do
-      #       if [[ $tag == *-beta* || $tag == *-release* ]]; then
-      #         git push --delete origin $tag
-      #       fi
-      #     done
+      - name: Eliminar Etiquetas de -beta y -release
+        run: |
+          git fetch --tags
+          for tag in $(git tag -l | grep -E '(-beta|-release)'); do
+            git tag -d $tag
+          done
+          git fetch --prune --tags
+          git push origin --delete $(git tag -l | grep -E '(-beta|-release)') # Elimina las etiquetas en el repositorio remoto

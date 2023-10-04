@@ -15,6 +15,9 @@ jobs:
         id: list_tags
         run: echo tags="$(git tag -l)" >> $GITHUB_OUTPUT
 
+      - name: Print tags
+        run: echo ${{ steps.list_tags.outputs.tags }}
+
       - name: Eliminar etiquetas
         run: |
           TAGS="${{ steps.list_tags.outputs.tags }}"

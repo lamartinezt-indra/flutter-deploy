@@ -12,6 +12,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Eliminar Etiquetas de -beta y -release
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           git fetch --tags
           for tag in $(git tag -l | grep -E '(-beta|-release)'); do

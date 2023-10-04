@@ -13,16 +13,18 @@ jobs:
 
       - name: List tags
         id: list_tags
-        run: echo tags="$(git tag -l)" >> $GITHUB_OUTPUT
+        uses: jimschubert/query-tag-action@v1
+        with:
+          include: "v*-beta"
 
       - name: Print tags
-        run: echo ${{ steps.list_tags.outputs.tags }}
+        run: echo ${{ steps.list_tags.outputs.tag }}
 
-      - name: Eliminar etiquetas
-        run: |
-          TAGS="${{ steps.list_tags.outputs.tags }}"
-          for tag in $TAGS; do
-            if [[ $tag == *-beta* || $tag == *-release* ]]; then
-              git push --delete origin $tag
-            fi
-          done
+      # - name: Eliminar etiquetas
+      #   run: |
+      #     TAGS="${{ steps.list_tags.outputs.tags }}"
+      #     for tag in $TAGS; do
+      #       if [[ $tag == *-beta* || $tag == *-release* ]]; then
+      #         git push --delete origin $tag
+      #       fi
+      #     done

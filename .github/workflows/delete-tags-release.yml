@@ -1,0 +1,25 @@
+name: Remove Tags and Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  remove-tags:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout el código
+        uses: actions/checkout@v2
+
+      - name: List tags
+        id: list_tags
+        run: echo tags="$(git tag -l)" >> $GITHUB_OUTPUT
+
+      - name: Eliminar etiquetas
+        run: |
+          TAGS="${{ steps.list_tags.outputs.version }}"
+          for tag in $TAGS; do
+            if [[ $tag == *-beta* || $tag == *-release* ]]; then
+              git push --delete origin $tag
+            fi
+          done

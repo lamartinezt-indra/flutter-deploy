@@ -21,6 +21,10 @@ jobs:
           cache: true
       - run: flutter --version
 
+      - name: Analyze files
+        run: |
+          flutter analyze .
+
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin" # See 'Supported distributions' for available options

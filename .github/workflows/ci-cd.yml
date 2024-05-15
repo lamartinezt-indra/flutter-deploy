@@ -19,6 +19,7 @@ jobs:
           channel: "stable"
           flutter-version: "${{ secrets.FLUTTER_VERSION }}" 
           cache: true
+      - run: flutter --version
 
       - uses: actions/setup-java@v4
         with:

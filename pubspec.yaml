@@ -19,8 +19,8 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
-  flutter: 3.19.0
+  sdk: ">=3.5.0 <4.0.0"
+  flutter: 3.24.5
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,53 +34,55 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
-  fl_chart: ^0.67.0
-  carousel_slider: ^4.2.1
-  flutter_map: ^6.1.0
-  url_launcher: ^6.2.5
+  cupertino_icons: ^1.0.8
+  fl_chart: ^0.69.2
+  carousel_slider: ^5.0.0
+  flutter_map: ^7.0.2
+  url_launcher: ^6.3.1
   cached_network_image: ^3.3.1
-  webview_flutter: ^4.7.0
-  dio: ^5.4.2+1
+  webview_flutter: ^4.8.0
+  dio: ^5.7.0
   get: ^4.6.6
   badges: ^3.1.2
   local_auth: ^2.2.0
   local_auth_platform_interface: ^1.0.10
-  local_auth_android: ^1.0.37
-  local_auth_ios: ^1.1.7
+  local_auth_android: ^1.0.42
+  local_auth_darwin: ^1.4.1
   auto_size_text: ^3.0.0
-  pushwoosh: ^2.2.13
+  pushwoosh_flutter: ^2.3.4
   flutter_mailer: ^2.1.2
   flutter_easyloading: ^3.0.5
-  flutter_secure_storage: ^9.0.0
-  font_awesome_flutter: ^10.7.0
-  geolocator: ^11.0.0
+  flutter_secure_storage: ^9.2.2
+  font_awesome_flutter: ^10.8.0
+  geolocator: ^13.0.2
   mask_text_input_formatter: ^2.9.0
-  connectivity_plus: ^6.0.1
+  connectivity_plus: ^6.0.3
   introduction_screen: ^3.1.14
   flutter_svg: ^2.0.10+1
-  intl: ^0.17.0
-  share_plus: ^7.2.2
+  intl: ^0.19.0
+  share_plus: ^10.1.2
   flutter_dotenv: ^5.1.0
   device_info_plus: ^9.1.2
-  package_info_plus: ^5.0.1
+  package_info_plus: ^8.0.0
   dart_ipify: ^1.1.1
-  flutter_app_badger: ^1.5.0
+  flutter_app_badge_control: ^0.0.2
   permission_handler: ^11.3.1
-  firebase_core: ^2.25.5
-  firebase_remote_config: ^4.3.15
-  camera: ^0.10.5+9
-  image_picker: ^1.0.7
-  image_cropper: ^5.0.1
-  flutter_image_compress: ^2.2.0
+  firebase_core: ^3.9.0
+  firebase_remote_config: ^5.2.0
+  camera: ^0.11.0+1
+  image_picker: ^1.1.2
+  image_cropper: ^8.1.0
+  flutter_image_compress: ^2.3.0
   flutter_pdfview: ^1.3.2
   styled_text: ^8.1.0
-  torch_light: ^1.0.0
-  file_picker: ^8.0.0+1
+  torch_light: ^1.1.0
+  file_picker: ^8.1.7
   latlong2: ^0.9.1
   path: ^1.9.0
-  path_provider: ^2.1.2
+  path_provider: ^2.1.3
   pdfx: ^2.6.0
+  camera_android_camerax: "0.6.7+2"
+  flutter_typeahead: ^5.2.0
 
 dev_dependencies:
   flutter_test:
